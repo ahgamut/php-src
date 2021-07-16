@@ -1,4 +1,6 @@
 # General ignores
+libcosmo/*
+!libcosmo/README.md
 *~
 .#*
 *.
@@ -54,7 +56,6 @@ configuration-parser.c
 configuration-parser.h
 configuration-parser.output
 configuration-scanner.c
-configure
 conftest
 conftest.c
 debug.log
