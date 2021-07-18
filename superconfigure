@@ -43,4 +43,4 @@ LD_LIBRARY_PATH="" ./configure \
     $COSMO_LIBDIR/cosmopolitan.a" 
 
 echo "<<<SUPERCONFIGURE>>> Running make"
-# make -j4
+make -j4
