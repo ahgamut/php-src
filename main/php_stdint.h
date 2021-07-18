@@ -216,6 +216,10 @@ typedef unsigned long long uint64_t;
 # endif
 #endif
 
+typedef unsigned char u_char;
+typedef unsigned long u_long;
+typedef uint64_t ULARGE_INTEGER;
+
 #endif /* !PHP_WIN32 */
 #endif /* PHP_STDINT_H */
 

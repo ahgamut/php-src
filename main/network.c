@@ -927,7 +927,7 @@ skip_bind:
 			}
 
 			/* adjust timeout for next attempt */
-#if HAVE_GETTIMEOFDAY
+#if 0 && HAVE_GETTIMEOFDAY
 			if (timeout) {
 				gettimeofday(&time_now, NULL);
 

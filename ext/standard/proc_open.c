@@ -893,25 +893,22 @@ PHP_FUNCTION(proc_open)
 
 		switch (descriptors[i].mode & ~DESC_PARENT_MODE_WRITE) {
 			case DESC_PIPE:
-				switch(descriptors[i].mode_flags) {
+                    {
+                    int _di_mode_flags = descriptors[i].mode_flags;
 #ifdef PHP_WIN32
-					case O_WRONLY|O_BINARY:
+                    if(_di_mode_flags == O_WRONLY|O_BINARY)
 						mode_string = "wb";
-						break;
-					case O_RDONLY|O_BINARY:
+					else if (_di_mode_flags == O_RDONLY|O_BINARY)
 						mode_string = "rb";
-						break;
 #endif
-					case O_WRONLY:
+					if (_di_mode_flags == O_WRONLY)
 						mode_string = "w";
-						break;
-					case O_RDONLY:
+				    else if (_di_mode_flags == O_RDONLY)
 						mode_string = "r";
-						break;
-					case O_RDWR:
+					else if (_di_mode_flags == O_RDWR)
 						mode_string = "r+";
-						break;
-				}
+                    }
+
 #ifdef PHP_WIN32
 				stream = php_stream_fopen_from_fd(_open_osfhandle((zend_intptr_t)descriptors[i].parentend,
 							descriptors[i].mode_flags), mode_string, NULL);

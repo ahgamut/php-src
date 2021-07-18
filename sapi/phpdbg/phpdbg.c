@@ -1285,9 +1285,8 @@ void phpdbg_signal_handler(int sig, siginfo_t *info, void *context) /* {{{ */
 {
 	int is_handled = FAILURE;
 
-	switch (sig) {
-		case SIGBUS:
-		case SIGSEGV:
+	if (sig ==  SIGBUS || sig == SIGSEGV)
+    {
 			is_handled = phpdbg_watchpoint_segfault_handler(info, context);
 			if (is_handled == FAILURE) {
 				if (PHPDBG_G(sigsegv_bailout)) {
@@ -1295,7 +1294,6 @@ void phpdbg_signal_handler(int sig, siginfo_t *info, void *context) /* {{{ */
 				}
 				zend_sigaction(sig, &PHPDBG_G(old_sigsegv_signal), NULL);
 			}
-			break;
 	}
 
 } /* }}} */

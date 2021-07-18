@@ -941,16 +941,14 @@ static int php_userstreamop_set_option(php_stream *stream, int option, int value
 		if (value & LOCK_NB) {
 			Z_LVAL_P(&args[0]) |= PHP_LOCK_NB;
 		}
-		switch(value & ~LOCK_NB) {
-		case LOCK_SH:
+
+        {
+		if( (value & ~LOCK_NB) ==  LOCK_SH)
 			Z_LVAL_P(&args[0]) |= PHP_LOCK_SH;
-			break;
-		case LOCK_EX:
+        else if( (value & ~LOCK_NB) ==  LOCK_EX)
 			Z_LVAL_P(&args[0]) |= PHP_LOCK_EX;
-			break;
-		case LOCK_UN:
+        else if( (value & ~LOCK_NB) ==  LOCK_UN)
 			Z_LVAL_P(&args[0]) |= PHP_LOCK_UN;
-			break;
 		}
 
 		/* TODO wouldblock */

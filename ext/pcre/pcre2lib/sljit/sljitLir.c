@@ -299,6 +299,9 @@
 #define CHECK_RETURN_TYPE sljit_s32
 #define CHECK_RETURN_OK return 0
 
+#ifdef CHECK 
+#define __CHECK CHECK
+#undef CHECK
 #define CHECK(x) \
 	do { \
 		if (SLJIT_UNLIKELY(x)) { \
@@ -306,6 +309,7 @@
 			return SLJIT_ERR_BAD_ARGUMENT; \
 		} \
 	} while (0)
+#endif
 
 #define CHECK_PTR(x) \
 	do { \

@@ -42,6 +42,7 @@
 #else
 # include <netdb.h>
 #endif
+#undef AF_INET6
 
 PHPAPI zend_string* php_inet_ntop(const struct sockaddr *addr) {
 	socklen_t addrlen = sizeof(struct sockaddr_in);

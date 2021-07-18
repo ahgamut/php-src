@@ -124,6 +124,11 @@
 #define zend_quiet_write(...) ZEND_IGNORE_VALUE(write(__VA_ARGS__))
 
 /* all HAVE_XXX test have to be after the include of zend_config above */
+#undef PHP_HAVE_SSE4_2_INSTRUCTIONS
+#undef PHP_HAVE_SSSE3_INSTRUCTIONS
+#undef __SSSE3__
+#undef __SSE2__
+#undef __SSE4_2__
 
 #if defined(HAVE_LIBDL) && !defined(ZEND_WIN32)
 

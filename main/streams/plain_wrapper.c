@@ -958,8 +958,8 @@ static int php_plain_files_dirstream_close(php_stream *stream, int close_handle)
 
 static int php_plain_files_dirstream_rewind(php_stream *stream, zend_off_t offset, int whence, zend_off_t *newoffs)
 {
-	rewinddir((DIR *)stream->abstract);
-	return 0;
+	// rewinddir((DIR *)stream->abstract);
+	return -1;
 }
 
 static const php_stream_ops	php_plain_files_dirstream_ops = {

@@ -5435,7 +5435,7 @@ main ()
 }
 _ACEOF
 if ac_fn_c_try_compile "$LINENO"; then :
-  ax_cv_check_cflags___fvisibility_hidden=yes
+  ax_cv_check_cflags___fvisibility_hidden=no
 else
   ax_cv_check_cflags___fvisibility_hidden=no
 fi

@@ -1,6 +1,7 @@
 # General ignores
 libcosmo/*
 !libcosmo/README.md
+*.com
 *~
 .#*
 *.

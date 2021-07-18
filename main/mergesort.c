@@ -65,7 +65,7 @@ static char sccsid[] = "@(#)merge.c	8.2 (Berkeley) 2/14/94";
 #endif
 
 static void setup(u_char *list1, u_char *list2, size_t n, size_t size, int (*cmp)(const void *, const void *));
-static void insertionsort(u_char *a, size_t n, size_t size, int (*cmp)(const void *, const void *));
+static void php_insertionsort(u_char *a, size_t n, size_t size, int (*cmp)(const void *, const void *));
 
 #define ISIZE sizeof(int)
 #define PSIZE sizeof(u_char *)
@@ -267,7 +267,7 @@ static void setup(u_char *list1, u_char *list2, size_t n, size_t size, int (*cmp
 
 	size2 = size*2;
 	if (n <= 5) {
-		insertionsort(list1, n, size, cmp);
+		php_insertionsort(list1, n, size, cmp);
 		*EVAL(list2) = (u_char*) list2 + n*size;
 		return;
 	}
@@ -276,7 +276,7 @@ static void setup(u_char *list1, u_char *list2, size_t n, size_t size, int (*cmp
 	 * for simplicity.
 	 */
 	i = 4 + (n & 1);
-	insertionsort(list1 + (n - i) * size, i, size, cmp);
+	php_insertionsort(list1 + (n - i) * size, i, size, cmp);
 	last = list1 + size * (n - i);
 	*EVAL(list2 + (last - list1)) = list2 + n * size;
 
@@ -327,11 +327,11 @@ static void setup(u_char *list1, u_char *list2, size_t n, size_t size, int (*cmp
 }
 /* }}} */
 
-/* {{{ insertionsort
+/* {{{ php_insertionsort
  * This is to avoid out-of-bounds addresses in sorting the
  * last 4 elements.
  */
-static void insertionsort(u_char *a, size_t n, size_t size, int (*cmp)(const void *, const void *))
+static void php_insertionsort(u_char *a, size_t n, size_t size, int (*cmp)(const void *, const void *))
 {
 	u_char *ai, *s, *t, *u, tmp;
 	size_t i;

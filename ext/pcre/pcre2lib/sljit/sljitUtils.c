@@ -106,7 +106,7 @@ SLJIT_API_FUNC_ATTRIBUTE void SLJIT_FUNC sljit_release_lock(void)
 
 #else /* _WIN32 */
 
-#if (defined SLJIT_EXECUTABLE_ALLOCATOR && SLJIT_EXECUTABLE_ALLOCATOR)
+#if 0 && (defined SLJIT_EXECUTABLE_ALLOCATOR && SLJIT_EXECUTABLE_ALLOCATOR)
 
 #include <pthread.h>
 
@@ -124,7 +124,7 @@ static SLJIT_INLINE void allocator_release_lock(void)
 
 #endif /* SLJIT_EXECUTABLE_ALLOCATOR */
 
-#if (defined SLJIT_UTIL_GLOBAL_LOCK && SLJIT_UTIL_GLOBAL_LOCK)
+#if 0 && (defined SLJIT_UTIL_GLOBAL_LOCK && SLJIT_UTIL_GLOBAL_LOCK)
 
 #include <pthread.h>
 
@@ -165,7 +165,7 @@ SLJIT_API_FUNC_ATTRIBUTE void SLJIT_FUNC sljit_release_lock(void)
 /* Some old systems does not have MAP_ANON. */
 static sljit_s32 dev_zero = -1;
 
-#if (defined SLJIT_SINGLE_THREADED && SLJIT_SINGLE_THREADED)
+#if 1 || (defined SLJIT_SINGLE_THREADED && SLJIT_SINGLE_THREADED)
 
 static SLJIT_INLINE sljit_s32 open_dev_zero(void)
 {

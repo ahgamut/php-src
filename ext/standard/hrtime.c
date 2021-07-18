@@ -58,7 +58,7 @@ static mach_timebase_info_data_t _timerlib_info;
 
 static int _timer_init()
 {/*{{{*/
-#if PHP_HRTIME_PLATFORM_WINDOWS
+#if 0 && PHP_HRTIME_PLATFORM_WINDOWS
 
 	LARGE_INTEGER tf = {0};
 	if (!QueryPerformanceFrequency(&tf) || 0 == tf.QuadPart) {
@@ -103,7 +103,7 @@ PHP_MINIT_FUNCTION(hrtime)
 {
 	if (0 > _timer_init()) {
 		php_error_docref(NULL, E_WARNING, "Failed to initialize high-resolution timer");
-		return FAILURE;
+		// return FAILURE;
 	}
 
 	return SUCCESS;

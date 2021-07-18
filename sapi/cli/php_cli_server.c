@@ -107,6 +107,10 @@
 #define OUTPUT_IS_TTY 1
 #define OUTPUT_NOT_TTY 0
 
+#ifndef SOMAXCONN
+#define SOMAXCONN 128
+#endif
+
 typedef struct php_cli_server_poller {
 	fd_set rfds, wfds;
 	struct {

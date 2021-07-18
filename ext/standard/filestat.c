@@ -27,6 +27,11 @@
 #include <ctype.h>
 #include <time.h>
 
+#ifdef WINDOWS
+#define __WINDOWS WINDOWS
+#undef WINDOWS
+#endif
+
 #if HAVE_UNISTD_H
 # include <unistd.h>
 #endif

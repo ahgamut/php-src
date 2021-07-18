@@ -328,7 +328,13 @@ PHP_MSHUTDOWN_FUNCTION(file) /* {{{ */
 }
 /* }}} */
 
-static int flock_values[] = { LOCK_SH, LOCK_EX, LOCK_UN };
+static int flock_values[3] = {-1, -1, -1};
+void _init_flock_values()
+{
+	int local_values[] = { LOCK_SH, LOCK_EX, LOCK_UN };
+	_Static_assert(sizeof(flock_values) == sizeof(local_values), "flock_values alloc error");
+	memcpy(flock_values, local_values, sizeof(local_values));
+}
 
 /* {{{ proto bool flock(resource fp, int operation [, int &wouldblock])
    Portable file locking */
@@ -338,6 +344,7 @@ PHP_FUNCTION(flock)
 	int act;
 	php_stream *stream;
 	zend_long operation = 0;
+	if(flock_values[0] == -1) _init_flock_values();
 
 	ZEND_PARSE_PARAMETERS_START(2, 3)
 		Z_PARAM_RESOURCE(res)

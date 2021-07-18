@@ -1,7 +1,7 @@
 #!/bin/sh
 set -eux
 
-COSMO_LIBDIR=$(realpath "./libcosmo/")
+COSMO_LIBDIR=$(realpath "./libcosmo")
 HEADER_PATHS=$(realpath "./header_stubs")
 CC="${CC:-gcc}"
 
@@ -13,41 +13,34 @@ fi
 echo "<<<SUPERCONFIGURE>>> cosmopolitan.h exists in $COSMO_LIBDIR, assuming other files exist as well"
 echo "<<<SUPERCONFIGURE>>> Running configure with $CC"
 LD_LIBRARY_PATH="" ./configure \
-    --prefix="" \
     --enable-shared=no --enable-static=yes \
-    --disable-all \
     --disable-ipv6 --without-pear \
-    --without-pcre \
-    --with-dmalloc \
-    OPT="" \
-    CCSHARED="" \
-    LINKFORSHARED="" \
-    PKG_CONFIG="" \
-    CFLAGS="-Os -Wall -Wno-strict-prototypes -Wno-unused-value \
-      -std=c99 -static \
-      -fno-pie -fno-omit-frame-pointer \
-      -ffunction-sections -fdata-sections \
-      -mno-red-zone -pg \
-      -nostdinc -nostdlib \
-      -I$HEADER_PATHS \
-      -include $COSMO_LIBDIR/cosmopolitan.h" \
+    --without-pcre-jit --disable-cgi \
+    --with-pic=no --disable-filter \
+    --without-valgrind --disable-hash \
+    --disable-phpdbg-debug --disable-debug \
+    --disable-all \
+    CFLAGS="-Os \
+    -Wall -Wno-implicit-fallthrough \
+    -Wno-strict-prototypes -Wno-unused-value \
+    -std=c99 -static \
+    -fno-pie -no-pie \
+    -fno-omit-frame-pointer \
+    -ffunction-sections -fdata-sections \
+    -mno-red-zone -pg \
+    -nostdinc -nostdlib \
+    -I$HEADER_PATHS \
+    -include $COSMO_LIBDIR/cosmopolitan.h" \
     LDFLAGS="-static -nostdlib -nostdinc \
-      -fno-pie -mno-red-zone \
-      -include $COSMO_LIBDIR/cosmopolitan.h" \
+    -fno-pie -no-pie -mno-red-zone \
+    -include $COSMO_LIBDIR/cosmopolitan.h" \
     LIBS="\
-      -Wl,--gc-sections -fuse-ld=bfd \
-      -Wl,-T,$COSMO_LIBDIR/ape.lds \
-      -include $COSMO_LIBDIR/cosmopolitan.h \
-      $COSMO_LIBDIR/crt.o \
-      $COSMO_LIBDIR/ape.o \
-      $COSMO_LIBDIR/cosmopolitan.a" \
-    CFLAGS_NODIST="-Os -Wall -Wno-strict-prototypes -Wno-unused-value \
-      -std=c99 -static \
-      -fno-pie -fno-omit-frame-pointer \
-      -mno-red-zone -pg \
-      -nostdinc -nostdlib \
-      -I$HEADER_PATHS \
-      -include $COSMO_LIBDIR/cosmopolitan.h" 
+    -Wl,--gc-sections -fuse-ld=bfd \
+    -Wl,-T,$COSMO_LIBDIR/ape.lds \
+    -include $COSMO_LIBDIR/cosmopolitan.h \
+    $COSMO_LIBDIR/crt.o \
+    $COSMO_LIBDIR/ape.o \
+    $COSMO_LIBDIR/cosmopolitan.a" 
 
 echo "<<<SUPERCONFIGURE>>> Running make"
-make -j4
+# make -j4
