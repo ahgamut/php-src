@@ -11,6 +11,13 @@ if [ ! -f $COSMO_LIBDIR/cosmopolitan.h ]; then
 fi
 
 echo "<<<SUPERCONFIGURE>>> cosmopolitan.h exists in $COSMO_LIBDIR, assuming other files exist as well"
+
+echo "<<<SUPERCONFIGURE>>> running buildconf "
+./buildconf --force
+
+echo "<<<SUPERCONFIGURE>>> checking out configure just in case"
+git checkout -- ./configure
+
 echo "<<<SUPERCONFIGURE>>> Running configure with $CC"
 LD_LIBRARY_PATH="" ./configure \
     --enable-shared=no --enable-static=yes \
