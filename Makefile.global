@@ -5,14 +5,20 @@ INSTALL_DATA = $(INSTALL) -m 644
 DEFS = -DPHP_ATOM_INC -I$(top_builddir)/include -I$(top_builddir)/main -I$(top_srcdir)
 COMMON_FLAGS = $(DEFS) $(INCLUDES) $(EXTRA_INCLUDES) $(CPPFLAGS) $(PHP_FRAMEWORKPATH)
 PHP_CLI_APE = php.com
+PHP_CGI_APE = php-cgi.com
+APE_TARGETS = $(PHP_CLI_APE) $(PHP_CGI_APE)
 
-all: $(all_targets) $(PHP_CLI_APE)
+all: $(all_targets) $(APE_TARGETS)
 	@echo
 	@echo "Build complete."
 	@echo "Don't forget to run 'make test'."
 	@echo
 
 $(PHP_CLI_APE): $(SAPI_CLI_PATH)
+	objcopy -SO binary $< $@
+	ls -rShal $@
+
+$(PHP_CGI_APE): $(SAPI_CGI_PATH)
 	objcopy -SO binary $< $@
 	ls -rShal $@
 
@@ -120,7 +126,7 @@ clean:
 	find . -path "./libcosmo" -prune -false -o -name \*.la -o -name \*.a | xargs rm -f
 	find . -name \*.so | xargs rm -f
 	find . -name .libs -a -type d|xargs rm -rf
-	rm -f libphp$(PHP_MAJOR_VERSION).la $(PHP_CLI_APE) $(SAPI_CLI_PATH) $(SAPI_CGI_PATH) $(SAPI_LITESPEED_PATH) $(SAPI_FPM_PATH) $(OVERALL_TARGET) modules/* libs/*
+	rm -f libphp$(PHP_MAJOR_VERSION).la $(PHP_CLI_APE) $(PHP_CGI_APE) $(SAPI_CLI_PATH) $(SAPI_CGI_PATH) $(SAPI_LITESPEED_PATH) $(SAPI_FPM_PATH) $(OVERALL_TARGET) modules/* libs/*
 
 distclean: clean
 	rm -f Makefile config.cache config.log config.status Makefile.objects Makefile.fragments libtool main/php_config.h main/internal_functions_cli.c main/internal_functions.c stamp-h buildmk.stamp Zend/zend_dtrace_gen.h Zend/zend_dtrace_gen.h.bak Zend/zend_config.h TSRM/tsrm_config.h

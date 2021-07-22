@@ -15,18 +15,21 @@ echo "<<<SUPERCONFIGURE>>> cosmopolitan.h exists in $COSMO_LIBDIR, assuming othe
 echo "<<<SUPERCONFIGURE>>> running buildconf "
 ./buildconf --force
 
-echo "<<<SUPERCONFIGURE>>> checking out configure just in case"
-git checkout -- ./configure
+# uncomment this line if 
+# echo "<<<SUPERCONFIGURE>>> checking out configure just in case"
+# git checkout -- ./configure
 
 echo "<<<SUPERCONFIGURE>>> Running configure with $CC"
 LD_LIBRARY_PATH="" ./configure \
     --enable-shared=no --enable-static=yes \
+    --with-pic=no \
     --disable-ipv6 --without-pear \
-    --without-pcre-jit --disable-cgi \
-    --with-pic=no --disable-filter \
+    --without-pcre-jit --disable-all \
     --without-valgrind --disable-hash \
     --disable-phpdbg-debug --disable-debug \
-    --disable-all \
+    --enable-filter --enable-exif \
+    --enable-ftp --enable-cgi \
+    --with-zlib-dir="./" \
     CFLAGS="-Os \
     -Wall -Wno-implicit-fallthrough \
     -Wno-strict-prototypes -Wno-unused-value \

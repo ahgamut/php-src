@@ -24,7 +24,8 @@
 #include "php_version.h"
 #define PHP_ZLIB_VERSION PHP_VERSION
 
-#include <zlib.h>
+// included in cosmopolitan.h
+// #include <zlib.h>
 
 #define PHP_ZLIB_ENCODING_RAW		-0xf
 #define PHP_ZLIB_ENCODING_GZIP		0x1f

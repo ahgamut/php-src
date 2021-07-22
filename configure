@@ -22283,11 +22283,10 @@ cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 #ifdef __cplusplus
 extern "C"
 #endif
-char gzgets ();
 int
 main ()
 {
-return gzgets ();
+    void *f = (void*)gzgets;
   ;
   return 0;
 }

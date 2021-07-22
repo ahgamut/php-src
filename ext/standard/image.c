@@ -33,7 +33,8 @@
 #endif
 
 #if HAVE_ZLIB && !defined(COMPILE_DL_ZLIB)
-#include "zlib.h"
+// included in cosmopolitan
+//#include "zlib.h"
 #endif
 
 /* file type markers */
