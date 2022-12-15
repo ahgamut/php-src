@@ -54,38 +54,37 @@ PHPAPI zend_string* php_inet_ntop(const struct sockaddr *addr) {
 
 	/* Prefer inet_ntop() as it's more task-specific and doesn't have to be demangled */
 #if HAVE_INET_NTOP
-	switch (addr->sa_family) {
 #ifdef AF_INET6
-		case AF_INET6: {
+	if(addr->sa_family == AF_INET6) {
 			zend_string *ret = zend_string_alloc(INET6_ADDRSTRLEN, 0);
 			if (inet_ntop(AF_INET6, &(((struct sockaddr_in6*)addr)->sin6_addr), ZSTR_VAL(ret), INET6_ADDRSTRLEN)) {
 				ZSTR_LEN(ret) = strlen(ZSTR_VAL(ret));
 				return ret;
 			}
 			zend_string_efree(ret);
-			break;
-		}
+		} else
 #endif
-		case AF_INET: {
+	if (addr->sa_family == AF_INET) {
 			zend_string *ret = zend_string_alloc(INET_ADDRSTRLEN, 0);
 			if (inet_ntop(AF_INET, &(((struct sockaddr_in*)addr)->sin_addr), ZSTR_VAL(ret), INET_ADDRSTRLEN)) {
 				ZSTR_LEN(ret) = strlen(ZSTR_VAL(ret));
 				return ret;
 			}
 			zend_string_efree(ret);
-			break;
 		}
-	}
 #endif
 
 	/* Fallback on getnameinfo() */
-	switch (addr->sa_family) {
+	if(addr->sa_family == AF_INET 
 #ifdef AF_INET6
-		case AF_INET6:
-			addrlen = sizeof(struct sockaddr_in6);
-			ZEND_FALLTHROUGH;
+	|| addr->sa_family == AF_INET6
 #endif
-		case AF_INET: {
+            ) {
+#ifdef AF_INET6
+	if(addr->sa_family == AF_INET6)
+	    { addrlen = sizeof(struct sockaddr_in6); }
+			// ZEND_FALLTHROUGH;
+#endif
 			zend_string *ret = zend_string_alloc(NI_MAXHOST, 0);
 			if (getnameinfo(addr, addrlen, ZSTR_VAL(ret), NI_MAXHOST, NULL, 0, NI_NUMERICHOST) == SUCCESS) {
 				/* Also demangle numeric host with %name suffix */
@@ -95,9 +94,8 @@ PHPAPI zend_string* php_inet_ntop(const struct sockaddr *addr) {
 				return ret;
 			}
 			zend_string_efree(ret);
-			break;
-		}
 	}
+	
 
 	return NULL;
 }

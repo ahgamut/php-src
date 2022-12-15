@@ -191,7 +191,8 @@ PHPAPI int php_random_bytes(void *bytes, size_t size, bool should_throw)
 		}
 
 		for (read_bytes = 0; read_bytes < size; read_bytes += (size_t) n) {
-			n = read(fd, bytes + read_bytes, size - read_bytes);
+            // Werror=pointer-arith PLS
+			n = read(fd, (void*)((size_t)(bytes) + read_bytes), size - read_bytes);
 			if (n <= 0) {
 				break;
 			}

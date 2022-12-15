@@ -99,10 +99,12 @@ static int _timer_init(void)
 /* {{{ */
 PHP_MINIT_FUNCTION(hrtime)
 {
+    /*
 	if (0 > _timer_init()) {
 		php_error_docref(NULL, E_WARNING, "Failed to initialize high-resolution timer");
 		return FAILURE;
 	}
+    */
 
 	return SUCCESS;
 }
@@ -110,7 +112,7 @@ PHP_MINIT_FUNCTION(hrtime)
 
 static zend_always_inline php_hrtime_t _timer_current(void)
 {/*{{{*/
-#if PHP_HRTIME_PLATFORM_WINDOWS
+#if 0 && PHP_HRTIME_PLATFORM_WINDOWS
 	LARGE_INTEGER lt = {0};
 	QueryPerformanceCounter(&lt);
 	return (php_hrtime_t)((php_hrtime_t)lt.QuadPart * _timer_scale);

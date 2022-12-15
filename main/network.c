@@ -927,7 +927,7 @@ php_socket_t php_network_connect_socket_to_host(const char *host, unsigned short
 		if (timeout) {
 			gettimeofday(&time_now, NULL);
 
-			if (!timercmp(&time_now, &limit_time, <)) {
+			if (time_now.tv_sec > limit_time.tv_sec) {
 				/* time limit expired; don't attempt any further connections */
 				fatal = 1;
 			} else {

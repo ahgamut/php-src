@@ -1,0 +1,60 @@
+#!/bin/sh
+set -eux
+
+COSMO_REPODIR=$(realpath "../libcosmo/cosmopolitan")
+COSMO_LIBDIR=$(realpath "./libcosmo")
+HEADER_PATHS=$(realpath "./header_stubs")
+CC="${CC:-gcc}"
+
+if [ ! -f $COSMO_LIBDIR/cosmopolitan.h ]; then
+    echo "<<<SUPERCONFIGURE>>> cosmopolitan.h does not exist in $COSMO_LIBDIR!!!!"
+    echo "<<<SUPERCONFIGURE>>> Have you downloaded cosmopolitan.zip and set COSMO_LIBDIR?"
+    exit 1
+fi
+
+if [ ! -f $COSMO_REPODIR/libc/integral/normalize.inc ]; then
+    echo "<<<SUPERCONFIGURE>>> cosmopolitan.h does not exist in $COSMO_REPODIR!!!!"
+    echo "<<<SUPERCONFIGURE>>> set the location of COSMO_REPODIR where you have cloned the cosmo repo."
+    exit 1
+fi
+
+
+
+echo "<<<SUPERCONFIGURE>>> cosmopolitan.h exists in $COSMO_LIBDIR, assuming other files exist as well"
+
+echo "<<<SUPERCONFIGURE>>> running buildconf "
+./buildconf --force
+
+# uncomment this line if 
+# echo "<<<SUPERCONFIGURE>>> checking out configure just in case"
+# git checkout -- ./configure
+
+echo "<<<SUPERCONFIGURE>>> Running configure with $CC"
+LD_LIBRARY_PATH="" ./configure \
+    --enable-shared=no --enable-static=yes \
+    --with-pic=no --with-gnu-ld=yes \
+    --disable-ipv6  \
+    --disable-all --without-pear \
+    --without-pcre-jit --without-valgrind \
+    --disable-phpdbg-debug --disable-debug \
+    --enable-filter --enable-exif \
+    --enable-ftp --enable-cgi \
+    --with-zlib-dir="./" \
+    CFLAGS="-O2 \
+    -Wall -Wno-implicit-fallthrough -Wno-strict-prototypes -Wno-unused-value \
+    -static -fno-pie -no-pie -fno-omit-frame-pointer \
+    -mno-red-zone -nostdinc -nostdlib \
+    -I$HEADER_PATHS \
+    -iquote$COSMO_REPODIR -I$COSMO_REPODIR \
+    -isystem$COSMO_REPODIR/libc/isystem   \
+    -include$COSMO_REPODIR/libc/integral/normalize.inc" \
+    LDFLAGS="-static -nostdlib -nostdinc \
+    -fno-pie -no-pie -mno-red-zone" \
+    LIBS="-fuse-ld=bfd \
+    -Wl,-T,$COSMO_LIBDIR/ape.lds \
+    $COSMO_LIBDIR/crt.o \
+    $COSMO_LIBDIR/ape-no-modify-self.o \
+    $COSMO_LIBDIR/cosmopolitan.a" 
+
+echo "<<<SUPERCONFIGURE>>> Running make"
+# make -j4

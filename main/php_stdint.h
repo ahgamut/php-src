@@ -42,10 +42,8 @@
 #include <inttypes.h>
 #include <stdint.h>
 
-#if defined(_MSC_VER)
 # ifndef u_char
-typedef unsigned __int8   u_char;
+typedef uint8_t u_char;
 # endif
-#endif /* !_MSC_VER */
 
 #endif /* PHP_STDINT_H */

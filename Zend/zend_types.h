@@ -27,8 +27,9 @@
 #include <stdbool.h>
 
 #ifdef __SSE2__
-# include <mmintrin.h>
-# include <emmintrin.h>
+#undef __SSE2__
+// # include <mmintrin.h>
+// # include <emmintrin.h>
 #endif
 
 #ifdef WORDS_BIGENDIAN
