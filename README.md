@@ -1,3 +1,16 @@
+#
+
+* clone the Cosmopolitan libc repo and set `COSMO_REPODIR` in `superconfigure`
+* download `cosmopolitan.zip` from
+  https://justine.lol/cosmopolitan/cosmopolitan.zip and unzip contents into
+  `./libcosmo` and set `COSMO_LIBDIR` in superconfigure
+
+```bash
+./superconfigure
+make -j4
+./sapi/cli/php -v
+```
+
 <div align="center">
     <a href="https://php.net">
         <img
